@@ -89,9 +89,11 @@ window.addEventListener("load", function(){
   // draw lines
   function connectingLines(){
     if (x === null || y === null) return;
+        
+    let d = window.innerWidth < 400 ? 100 : 200;
     for(let circle of circles){
       let distance = Math.sqrt((x-circle.x)**2 + (y-circle.y)**2)
-      if(distance < 300){
+      if(distance < d){
         ctx.beginPath();
         ctx.strokeStyle = "white";
         ctx.moveTo(circle.x, circle.y);
@@ -108,5 +110,26 @@ window.addEventListener("load", function(){
     x = e.clientX;
     y = e.clientY;
   });
+  document.addEventListener("mouseleave", () => {
+    x = null;
+    y = null;
+  });
+
+window.addEventListener("touchstart", e => {
+  const touch = e.touches[0];
+  x = touch.clientX;
+  y = touch.clientY;
+}, { passive: true });
+
+window.addEventListener("touchend", () => {
+  x = null;
+  y = null;
+});
+
+document.body.addEventListener('touchstart', e => {
+  if (e.target === canvas) e.preventDefault();
+}, { passive: false });
+
+
   this.window.addEventListener("resize", resize)
 })
